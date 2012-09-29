@@ -1,6 +1,7 @@
 package org.djd.fun.ninja;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
@@ -74,7 +75,6 @@ public class ProfilesActivity extends Activity {
     try {
       if (jsonObj != null) {
         String json = jsonObj.toString(2);
-//        new AlertDialog.Builder(this).setMessage(json).setTitle(titleId).create().show();
         webView.scrollTo(0, 0);
         webView.loadData(wrapHtml(json), HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
       }
@@ -88,13 +88,13 @@ public class ProfilesActivity extends Activity {
   }
 
   private void push(Transformer transformer){
-    String endpoint = Constants.HYPERION_ENDPOINT + transformer.getResultId();
+    String endpoint = Constants.HYPERION_ENDPOINT + transformer.getResultId() + "/";
     Log.i(TAG, endpoint);
     try {
       byte[] response = httpClient.postAsJson(endpoint, transformer.getResultJsonObject());
       Log.i(TAG, new String(response));
     } catch (HttpException e) {
-      Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+      new AlertDialog.Builder(this).setMessage(e.toString()).setTitle(e.getMessage()).create().show();
     }
 
 //    http://stackoverflow.com/questions/6028981/using-httpclient-and-httppost-in-android-with-post-parameters

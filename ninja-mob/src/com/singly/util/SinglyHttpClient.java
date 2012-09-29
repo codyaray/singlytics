@@ -198,9 +198,8 @@ public class SinglyHttpClient {
 
   public byte[] postAsJson(String url, JSONObject jsonObject) throws HttpException {
     HttpPost httpPost = new HttpPost(url);
-    List<NameValuePair> postParams = new ArrayList<NameValuePair>();
     try {
-      UrlEncodedFormEntity entity = new UrlEncodedFormEntity(postParams);
+      StringEntity entity = new StringEntity(jsonObject.toString());
       entity.setContentEncoding(HTTP.UTF_8);
       entity.setContentType(Constants.APPLICATION_JSON);
       httpPost.setEntity(entity);

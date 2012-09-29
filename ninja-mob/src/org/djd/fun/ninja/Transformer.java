@@ -51,8 +51,13 @@ public class Transformer {
           JSONArray jsonArray = json.getJSONArray(key);
           if (jsonArray.length() > 0) {
             // just deal with first element.
-            JSONObject jsonObject = jsonArray.getJSONObject(0);
-            builder.data(key, createServiceId(jsonObject));
+            Object obj = jsonArray.get(0);
+            if( obj instanceof JSONObject) {
+              JSONObject jsonObject = (JSONObject)obj;
+              builder.data(key, createServiceId(jsonObject));
+            } else {
+//              builder.data(key, "NIL");
+            }
           }
         } catch (JSONException e) {
           throw new TransformerException("serviceName: " + key, e);
