@@ -31,4 +31,13 @@
             android:layout_below="@+id/btn_servicehub"
             android:text="Profile Transformer"/>
 
+    <Button
+            android:id="@+id/btn_adpanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btn_profiles"
+            android:text="Ad Panel"/>
+
 </RelativeLayout>

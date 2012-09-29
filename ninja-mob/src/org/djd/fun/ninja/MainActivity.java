@@ -37,5 +37,12 @@ public class MainActivity extends Activity {
         startActivity(new Intent(activity, ProfilesActivity.class));
       }
     });
+
+    findViewById(R.id.btn_adpanel).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        startActivity(new Intent(activity, AdPaneActivity.class));
+      }
+    });
   }
 }

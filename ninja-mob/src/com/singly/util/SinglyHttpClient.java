@@ -178,6 +178,58 @@ public class SinglyHttpClient {
         + maxRetries);
   }
 
+
+  /**
+   * Returns a byte array containing the GET response to the url.  This method
+   * will try up to 3 times to retrieve a url before erroring.
+   *
+   * @param url The url to GET.
+   * @return The url content as a byte array.
+   */
+  public byte[] getAd(String url)
+      throws HttpException {
+
+    HttpGet httpget = null;
+    boolean errored = false;
+
+    // try a max number of time to get the url
+    for (int i = 0; i < maxRetries; i++) {
+
+      try {
+
+        httpget = new HttpGet(url);
+        HttpResponse response = httpClient.execute(httpget);
+        StatusLine status = response.getStatusLine();
+        int statusCode = status.getStatusCode();
+        if (statusCode >= 300) {
+          throw new HttpException(statusCode, status.getReasonPhrase());
+        }
+
+        // log success if previously errored
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+          if (errored) {
+            Log.w(TAG, "get succedded: " + url + " on attempt " + (i + 1));
+          }
+          return EntityUtils.toByteArray(entity);
+        }
+
+        return null;
+      } catch (HttpException he) {
+        httpget.abort();
+        throw he;
+      } catch (Exception e) {
+        errored = true;
+        Log.w(TAG, e.getMessage() + " on get: " + url + " retrying " + (i + 1));
+        httpget.abort();
+      }
+
+    }
+
+    throw new HttpException("Error getting url " + url + ", tried "
+        + maxRetries);
+  }
+
   /**
    * Returns a byte array containing the POST response to the url.
    *

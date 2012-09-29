@@ -2,6 +2,7 @@ package org.djd.fun.ninja;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
@@ -89,6 +90,7 @@ public class ProfilesActivity extends Activity {
 
   private void push(Transformer transformer){
     String endpoint = Constants.HYPERION_ENDPOINT + transformer.getResultId() + "/";
+    saveId(transformer.getResultId());
     Log.i(TAG, endpoint);
     try {
       byte[] response = httpClient.postAsJson(endpoint, transformer.getResultJsonObject());
@@ -97,6 +99,16 @@ public class ProfilesActivity extends Activity {
       new AlertDialog.Builder(this).setMessage(e.toString()).setTitle(e.getMessage()).create().show();
     }
 
+    // save accountId for later use
+
+
 //    http://stackoverflow.com/questions/6028981/using-httpclient-and-httppost-in-android-with-post-parameters
+  }
+
+  private void saveId(String id) {
+    SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
+    SharedPreferences.Editor editor = sharedPreferences.edit();
+    editor.putString(Constants.PREF_KEY_ACCOUNT_ID, id);
+    editor.commit();
   }
 }
