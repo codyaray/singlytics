@@ -3,7 +3,9 @@ package org.djd.fun.ninja;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Toast;
@@ -20,7 +22,9 @@ import org.json.JSONObject;
  * To change this template use File | Settings | File Templates.
  */
 public class AdPaneActivity extends Activity {
-
+  private static final String TAG = AdPaneActivity.class.getSimpleName();
+  private static final String APP_ID_ACCT = "?appId=" + Constants.APP_ID + "&account=";
+  private String accountId;
   private WebView webView;
 
   public void onCreate(Bundle savedInstanceState) {
@@ -30,27 +34,34 @@ public class AdPaneActivity extends Activity {
     webView.getSettings().setBuiltInZoomControls(true);
 
     findViewById(R.id.btn_get_ad).setOnClickListener(new MyOnClickListener());
-
-//    Toast.makeText(this, getAccountId(), Toast.LENGTH_SHORT).show();
+    accountId = Util.getAccountId(this);
   }
+
 
   private class MyOnClickListener implements View.OnClickListener {
 
     public void onClick(View v) {
-
       webView.scrollTo(0, 0);
-      webView.loadData("<a href='http://www.google.com'><img src='https://www.google.com/images/srpr/logo3w.png'/></a>", HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
-      webView.loadData("<a href='http://www.google.com'><img src='" + createUrl() + "'/></a>", HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
-
+      String html = getAdHref();
+      Log.i(TAG, "html:" + html);
+      webView.loadData(html, HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
     }
   }
 
-  private String getAccountId() {
-    SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
-    return sharedPreferences.getString(Constants.PREF_KEY_ACCOUNT_ID, "No_AccountId_found_in_shared_preference.");
+  private String createUrl(String adServEndpoint) {
+    return adServEndpoint + APP_ID_ACCT + accountId + "/";
   }
 
-  private String createUrl() {
-    return Constants.AD_SERVE_ENDPOINT + "?appId=" + Constants.APP_ID + "&account=" + getAccountId() + "/";
+//  private String getAdHref() {
+//    return "<a href='"
+//        + createUrl(Constants.AD_SERVE_ENDPOINT_HREF) + "'/><img src='"
+//        + createUrl(Constants.AD_SERVE_ENDPOINT_IMG) + "'/></a>";
+//  }
+
+
+  private String getAdHref() {
+    return String.format("<a href='%s'/><img src='%s'/></a>",
+        createUrl(Constants.AD_SERVE_ENDPOINT_HREF),
+        createUrl(Constants.AD_SERVE_ENDPOINT_IMG));
   }
 }

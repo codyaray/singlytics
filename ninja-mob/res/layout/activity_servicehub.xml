@@ -86,6 +86,25 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/btn_linkedin"
             android:text="LinkedIn Self"/>
+    <Button
+            android:id="@+id/btn_twitter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btn_linkedin_self"
+            android:text="Twitter"/>
+
+    <Button
+            android:id="@+id/btn_twitter_self"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btn_twitter"
+            android:text="Twitter Self"/>
+
+
 
     <Button
             android:id="@+id/btn_debug_json"
@@ -93,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/btn_linkedin_self"
+            android:layout_below="@+id/btn_twitter_self"
             android:text="Debug JSON"/>
 
 </RelativeLayout>

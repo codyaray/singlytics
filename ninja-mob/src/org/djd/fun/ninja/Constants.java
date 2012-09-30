@@ -19,9 +19,10 @@ public abstract class Constants {
   public static final String SHARED_PREF_NAME = "NINJA-MOB-SHARED-PREF-NAME";
   public static final String PREF_KEY_ACCOUNT_ID = "PREF_KEY_ACCOUNT_ID";
   public static final String APP_ID = "ninja-mob";
-  // ?appId=ninja-mob&account=7ca4317f9af2216c8ced0ad386298c3f/
-  public static final String AD_SERVE_ENDPOINT = "http://singlytics-adserve.herokuapp.com/ad";
-  public static final String HYPERION_ENDPOINT = "http://singlytics-hyperion.herokuapp.com/profile/" + APP_ID + "/";
+  public static final String AD_SERVE_ENDPOINT_IMG = "http://singlytics-adserve.herokuapp.com/ad/img";
+  public static final String AD_SERVE_ENDPOINT_HREF = "http://singlytics-adserve.herokuapp.com/ad/href";
+  public static final String HYPERION_ENDPOINT_PROFILE = "http://singlytics-hyperion.herokuapp.com/profile/" + APP_ID + "/";
+  public static final String HYPERION_ENDPOINT_EVENT = "http://singlytics-hyperion.herokuapp.com/event/" + APP_ID + "/";
 
   public static final String END_POINT_SERVICES = "/services";
   public static final String END_POINT_PROFILES = "/profiles";
@@ -31,10 +32,14 @@ public abstract class Constants {
   public static final String END_POINT_GITHUB_SELF = "/services/github/self";
   public static final String END_POINT_LINKEDIN = "/services/linkedin";
   public static final String END_POINT_LINKEDIN_SELF = "/services/linkedin/self";
+
+  public static final String END_POINT_TWITTER= "/services/twitter";
+  public static final String END_POINT_TWITTER_SELF = "/services/twitter/self";
   public static final String SERVICE_NAME_FACEBOOK = "facebook";
   public static final String SERVICE_NAME_FLICKR = "flickr";
   public static final String SERVICE_NAME_GITHUB = "github";
   public static final String SERVICE_NAME_LINKEDIN = "linkedin";
+  public static final String SERVICE_NAME_TWITTER = "twitter";
 
 
   public static final Set<String> PROFILE_ATTRIBUTES_FILTER = Constants.createFilter();
@@ -44,11 +49,15 @@ public abstract class Constants {
     filter.add("id");
     filter.add("bio");
     filter.add("birthday");
+    filter.add("dateOfBirth");
+    filter.add("description");
+    filter.add("lang");
     filter.add("gender");
     filter.add("timezone");
     filter.add("languages");
     filter.add("locale");
     filter.add("location");
+    filter.add("utc_offset");
     return filter;
   }
 }

@@ -22,14 +22,13 @@ public class ProfilesActivity extends Activity {
   private static final String TAG = ProfilesActivity.class.getSimpleName();
   private SinglyClient api;
   private WebView webView;
-  private SinglyHttpClient httpClient;
+  private SinglyHttpClient singlyHttpClient;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_profiles);
-    httpClient = new SinglyHttpClient();
     webView = (WebView)super.findViewById(R.id.wv_profiles);
     webView.getSettings().setBuiltInZoomControls(true);
 
@@ -89,20 +88,15 @@ public class ProfilesActivity extends Activity {
   }
 
   private void push(Transformer transformer){
-    String endpoint = Constants.HYPERION_ENDPOINT + transformer.getResultId() + "/";
+    String endpoint = Constants.HYPERION_ENDPOINT_PROFILE + transformer.getResultId() + "/";
     saveId(transformer.getResultId());
     Log.i(TAG, endpoint);
     try {
-      byte[] response = httpClient.postAsJson(endpoint, transformer.getResultJsonObject());
+      byte[] response = singlyHttpClient.postAsJson(endpoint, transformer.getResultJsonObject());
       Log.i(TAG, new String(response));
     } catch (HttpException e) {
       new AlertDialog.Builder(this).setMessage(e.toString()).setTitle(e.getMessage()).create().show();
     }
-
-    // save accountId for later use
-
-
-//    http://stackoverflow.com/questions/6028981/using-httpclient-and-httppost-in-android-with-post-parameters
   }
 
   private void saveId(String id) {

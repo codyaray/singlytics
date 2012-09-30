@@ -55,6 +55,7 @@ public class SinglyHttpClient {
   ThreadSafeClientConnManager connMgr;
   private DefaultHttpClient httpClient;
 
+
   public SinglyHttpClient() {
     initialize();
   }
@@ -255,6 +256,37 @@ public class SinglyHttpClient {
       entity.setContentEncoding(HTTP.UTF_8);
       entity.setContentType(Constants.APPLICATION_JSON);
       httpPost.setEntity(entity);
+      httpPost.setHeader("Content-Type", Constants.APPLICATION_JSON);
+      httpPost.setHeader("Accept", Constants.APPLICATION_JSON);
+      HttpResponse response = httpClient.execute(httpPost);
+      StatusLine status = response.getStatusLine();
+      int statusCode = status.getStatusCode();
+      if (statusCode >= 300) {
+        throw new HttpException(statusCode, status.getReasonPhrase());
+      }
+      HttpEntity responseEntity = response.getEntity();
+      if (responseEntity != null) {
+        return EntityUtils.toByteArray(responseEntity);
+      }
+      return null;
+    } catch (HttpException he) {
+      httpPost.abort();
+      throw he;
+    } catch (Exception e) {
+      httpPost.abort();
+      throw new HttpException(e);
+    }
+  }
+
+  /**
+   * POST empty body
+   *
+   * @param url
+   * @return
+   */
+  public byte[] postEvent(String url) throws HttpException {
+    HttpPost httpPost = new HttpPost(url);
+    try {
       httpPost.setHeader("Content-Type", Constants.APPLICATION_JSON);
       httpPost.setHeader("Accept", Constants.APPLICATION_JSON);
       HttpResponse response = httpClient.execute(httpPost);

@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import com.singly.util.HttpException;
+import com.singly.util.SinglyHttpClient;
 
 public class MainActivity extends Activity {
   private static final String TAG = MainActivity.class.getSimpleName();
 
   private final Activity activity = this;
+  private SinglyHttpClient singlyHttpClient = new SinglyHttpClient();
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -44,5 +48,27 @@ public class MainActivity extends Activity {
         startActivity(new Intent(activity, AdPaneActivity.class));
       }
     });
+
   }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    try {
+      singlyHttpClient.postEvent(Util.createEventStartUrl(this, TAG));
+    } catch (HttpException e) {
+      Log.e(TAG, e.getMessage());
+    }
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    try {
+      singlyHttpClient.postEvent(Util.createEventCloseUrl(this, TAG));
+    } catch (HttpException e) {
+      Log.e(TAG, e.getMessage());
+    }
+  }
+
 }

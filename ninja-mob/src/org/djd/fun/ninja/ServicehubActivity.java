@@ -33,6 +33,8 @@ public class ServicehubActivity extends Activity {
     setContentView(R.layout.activity_servicehub);
     final Map<String, String> paramMap = new HashMap<String, String>();
     paramMap.put("data", "true"); // for profiles query with data.
+    //TODO remove this fresh for performance improvement
+    paramMap.put("fresh", "true"); // force get the latest and greatest profiles from the services.
     api = new SinglyClient(this, Constants.CLIENT_ID, Constants.CLIENT_SECRET);
 
     findViewById(R.id.btn_services).setOnClickListener(new View.OnClickListener() {
@@ -107,6 +109,22 @@ public class ServicehubActivity extends Activity {
       }
     });
 
+    findViewById(R.id.btn_twitter).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Toast.makeText(getBaseContext(), R.string.msg_loading_data, Toast.LENGTH_SHORT).show();
+        api.apiCall(Constants.END_POINT_TWITTER, paramMap, new CallBackListener());
+      }
+    });
+
+    findViewById(R.id.btn_twitter_self).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Toast.makeText(getBaseContext(), R.string.msg_loading_data, Toast.LENGTH_SHORT).show();
+        api.apiCall(Constants.END_POINT_TWITTER_SELF, paramMap, new CallBackListener());
+      }
+    });
+
     findViewById(R.id.btn_debug_json).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -151,7 +169,7 @@ public class ServicehubActivity extends Activity {
     } catch (TransformerException e) {
       Toast.makeText(getBaseContext(), e.getMessage(), Toast.LENGTH_LONG).show();
     }
-    String endpoint = Constants.HYPERION_ENDPOINT + transformer.getResultId();
+    String endpoint = Constants.HYPERION_ENDPOINT_PROFILE + transformer.getResultId();
     Log.i(TAG, endpoint);
 
     display(transformer.getResultJsonObject(), R.string.title_activity_transformed_profiles);

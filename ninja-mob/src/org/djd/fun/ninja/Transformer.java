@@ -93,11 +93,9 @@ public class Transformer {
   }
 
   private class Builder {
-
     // map(ServiceName,map(id,idValue))
     // i.e., "twitter":{"id":"456"}
     Map<String, Map<String, String>> services = new HashMap<String, Map<String, String>>();
-
     public Builder data(String serviceName, Map<String, String> data) {
       services.put(serviceName, data);
       return this;
@@ -110,7 +108,7 @@ public class Transformer {
           jsonObject.put(entry.getKey(), new JSONObject(entry.getValue()));
         }
       } catch (JSONException e) {
-        throw new TransformerException("build Error", e);
+        throw new TransformerException("Error construction of JSON object", e);
       }
       return jsonObject;
     }

@@ -29,6 +29,7 @@ public class AuthorizeActivity extends Activity {
     findViewById(R.id.flickr).setOnClickListener(new MyOnClickListener(Constants.SERVICE_NAME_FLICKR));
     findViewById(R.id.github).setOnClickListener(new MyOnClickListener(Constants.SERVICE_NAME_GITHUB));
     findViewById(R.id.linkedin).setOnClickListener(new MyOnClickListener(Constants.SERVICE_NAME_LINKEDIN));
+    findViewById(R.id.twitter).setOnClickListener(new MyOnClickListener(Constants.SERVICE_NAME_TWITTER));
   }
 
   @Override
