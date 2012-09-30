@@ -3,6 +3,7 @@ package org.djd.fun.ninja;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +14,6 @@ public class MainActivity extends Activity {
   private static final String TAG = MainActivity.class.getSimpleName();
 
   private final Activity activity = this;
-  private SinglyHttpClient singlyHttpClient = new SinglyHttpClient();
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -54,21 +54,14 @@ public class MainActivity extends Activity {
   @Override
   protected void onResume() {
     super.onResume();
-    try {
-      singlyHttpClient.postEvent(Util.createEventStartUrl(this, TAG));
-    } catch (HttpException e) {
-      Log.e(TAG, e.getMessage());
-    }
+    Util.dispatch(this, Util.createEventStartUrl(this, TAG));
   }
 
   @Override
   protected void onPause() {
     super.onPause();
-    try {
-      singlyHttpClient.postEvent(Util.createEventCloseUrl(this, TAG));
-    } catch (HttpException e) {
-      Log.e(TAG, e.getMessage());
-    }
+    Util.dispatch(this, Util.createEventCloseUrl(this, TAG));
   }
+
 
 }

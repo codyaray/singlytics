@@ -186,4 +186,18 @@ public class ServicehubActivity extends Activity {
       Log.e(TAG, e.getMessage());
     }
   }
+
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    Util.dispatch(this, Util.createEventStartUrl(this, TAG));
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    Util.dispatch(this, Util.createEventCloseUrl(this, TAG));
+  }
+
 }

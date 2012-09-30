@@ -16,6 +16,7 @@ public abstract class Constants {
   public static final String CLIENT_ID = "08bbf7c48b591aeee5f57ac18bb6adbf";
   public static final String CLIENT_SECRET = "f139d79372a461ce2b5ea6affede2df7";
 
+  public static final String EVENT_URL_INTENT_EXTRA_KEY = "EVENT_URL_INTENT_EXTRA_KEY";
   public static final String SHARED_PREF_NAME = "NINJA-MOB-SHARED-PREF-NAME";
   public static final String PREF_KEY_ACCOUNT_ID = "PREF_KEY_ACCOUNT_ID";
   public static final String APP_ID = "ninja-mob";

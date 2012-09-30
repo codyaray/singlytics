@@ -17,6 +17,7 @@ import com.singly.sdk.SinglyClient;
  */
 public class AuthorizeActivity extends Activity {
 
+  private static final String TAG = AuthorizeActivity.class.getSimpleName();
   private final Activity activity = this;
   private SinglyClient api = null;
 
@@ -86,4 +87,17 @@ public class AuthorizeActivity extends Activity {
       });
     }
   }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    Util.dispatch(this, Util.createEventStartUrl(this, TAG));
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    Util.dispatch(this, Util.createEventCloseUrl(this, TAG));
+  }
+
 }

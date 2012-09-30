@@ -2,6 +2,7 @@ package org.djd.fun.ninja;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 /**
@@ -24,5 +25,11 @@ public class Util {
 
   public static String createEventCloseUrl(Context context, String eventName) {
     return Constants.HYPERION_ENDPOINT_EVENT + Util.getAccountId(context) + "/" + eventName + "-close/";
+  }
+
+  public static void dispatch(Context context, String eventUrl) {
+    Intent intent = new Intent(context, EventDispatchService.class);
+    intent.putExtra(Constants.EVENT_URL_INTENT_EXTRA_KEY, eventUrl);
+    context.startService(intent);
   }
 }

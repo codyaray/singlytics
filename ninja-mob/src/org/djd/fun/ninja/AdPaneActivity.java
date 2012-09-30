@@ -1,6 +1,7 @@
 package org.djd.fun.ninja;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.nfc.Tag;
@@ -35,33 +36,44 @@ public class AdPaneActivity extends Activity {
 
     findViewById(R.id.btn_get_ad).setOnClickListener(new MyOnClickListener());
     accountId = Util.getAccountId(this);
+
+    webView.scrollTo(0, 0);
+    String html = getAdHref();
+    Log.i(TAG, "html:" + html);
+    webView.loadData(html, HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
+
   }
 
-
   private class MyOnClickListener implements View.OnClickListener {
-
     public void onClick(View v) {
-      webView.scrollTo(0, 0);
-      String html = getAdHref();
-      Log.i(TAG, "html:" + html);
-      webView.loadData(html, HTTP.PLAIN_TEXT_TYPE, HTTP.UTF_8);
+      popUp("You've got ad!");
     }
   }
 
-  private String createUrl(String adServEndpoint) {
-    return adServEndpoint + APP_ID_ACCT + accountId + "/";
+  private void popUp(String msg) {
+    new AlertDialog.Builder(this).setMessage(msg).create().show();
   }
 
-//  private String getAdHref() {
-//    return "<a href='"
-//        + createUrl(Constants.AD_SERVE_ENDPOINT_HREF) + "'/><img src='"
-//        + createUrl(Constants.AD_SERVE_ENDPOINT_IMG) + "'/></a>";
-//  }
-
+  private String createUrl(String adServEndpoint) {
+    return adServEndpoint + APP_ID_ACCT + accountId + "/?u="+System.currentTimeMillis();
+  }
 
   private String getAdHref() {
     return String.format("<a href='%s'/><img src='%s'/></a>",
         createUrl(Constants.AD_SERVE_ENDPOINT_HREF),
         createUrl(Constants.AD_SERVE_ENDPOINT_IMG));
   }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    Util.dispatch(this, Util.createEventStartUrl(this, TAG));
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    Util.dispatch(this, Util.createEventCloseUrl(this, TAG));
+  }
+
 }

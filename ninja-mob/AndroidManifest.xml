@@ -25,6 +25,7 @@
         <activity android:name=".AuthorizeActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ProfilesActivity" android:screenOrientation="portrait"/>
         <activity android:name=".AdPaneActivity" android:screenOrientation="portrait"/>
+        <service android:name=".EventDispatchService"/>
     </application>
 
 </manifest>

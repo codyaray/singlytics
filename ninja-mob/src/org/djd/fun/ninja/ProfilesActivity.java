@@ -32,6 +32,7 @@ public class ProfilesActivity extends Activity {
     webView = (WebView)super.findViewById(R.id.wv_profiles);
     webView.getSettings().setBuiltInZoomControls(true);
 
+    singlyHttpClient = new SinglyHttpClient();
     final Map<String, String> paramMap = new HashMap<String, String>();
     paramMap.put("data", "true"); // for profiles query with data.
     api = new SinglyClient(this, Constants.CLIENT_ID, Constants.CLIENT_SECRET);
@@ -51,7 +52,7 @@ public class ProfilesActivity extends Activity {
   private class CallBackListenerWithPush implements APICallListener {
     @Override
     public void onSuccess(JSONObject jsonObject) {
-      display(jsonObject, R.string.title_activity_profiles);
+//      display(jsonObject, R.string.title_activity_profiles);
       transformAndDisplay(new Transformer(jsonObject, Constants.PROFILE_ATTRIBUTES_FILTER));
     }
     @Override
@@ -105,4 +106,17 @@ public class ProfilesActivity extends Activity {
     editor.putString(Constants.PREF_KEY_ACCOUNT_ID, id);
     editor.commit();
   }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    Util.dispatch(this, Util.createEventStartUrl(this, TAG));
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    Util.dispatch(this, Util.createEventCloseUrl(this, TAG));
+  }
+
 }
